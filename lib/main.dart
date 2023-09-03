@@ -24,7 +24,7 @@ class ExpensesApp extends StatelessWidget {
         ),
         textTheme: myTheme.textTheme.copyWith(
           titleMedium: TextStyle(
-            fontFamily: 'Roboto',
+            fontFamily: 'OpenSans',
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.black,

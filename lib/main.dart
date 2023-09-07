@@ -51,7 +51,68 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [];
+  final List<Transaction> _transactions = [
+    Transaction(
+      id: '1',
+      title: 'title 1',
+      value: 99.00,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: '2',
+      title: 'title 2',
+      value: 99.00,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: '3',
+      title: 'title 3',
+      value: 99.00,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: '4',
+      title: 'title 4',
+      value: 99.00,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: '5',
+      title: 'title 5',
+      value: 99.00,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: '6',
+      title: 'title 6',
+      value: 99.00,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: '7',
+      title: 'title 7',
+      value: 99.00,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: '8',
+      title: 'title 8',
+      value: 99.00,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: '9',
+      title: 'title 9',
+      value: 99.00,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: '10',
+      title: 'title 10',
+      value: 99.00,
+      date: DateTime.now(),
+    ),
+  ];
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
@@ -94,23 +155,40 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Personal Expenses'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _openTransactionFormModal(context),
-          ),
-        ],
+    final appBar = AppBar(
+      title: Text(
+        'Personal Expenses',
+        // style: TextStyle(
+        //   fontSize: 20 * MediaQuery.of(context).textScaleFactor,
+        // ),
       ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _openTransactionFormModal(context),
+        ),
+      ],
+    );
+
+    final availableHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch, //ocupa todo espaco
           children: [
-            Chart(_recentTransactions),
-            TransactionList(_transactions, _removeTransaction),
+            Container(
+              height: availableHeight * 0.3,
+              child: Chart(_recentTransactions),
+            ),
+            Container(
+              height: availableHeight * 0.7,
+              child: TransactionList(_transactions, _removeTransaction),
+            ),
           ],
         ),
       ),

@@ -11,20 +11,28 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return transactions.isEmpty
-        ? Column(
-            children: [
-              Text(
-                'No Transaction Registered',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              SizedBox(height: 20),
-              Image.asset(
-                'assets/images/waiting.png',
-                fit: BoxFit.cover,
-                height: 150,
-              )
-            ],
+        ? LayoutBuilder(
+            builder: (context, constraints) {
+              return Column(
+                children: [
+                  SizedBox(height: 20),
+                  Text(
+                    'No Transaction Registered',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  SizedBox(height: 20),
+                  Image.asset(
+                    'assets/images/waiting.png',
+                    fit: BoxFit.cover,
+                    height: constraints.maxHeight * (isLandscape ? 0.55 : 0.25),
+                  )
+                ],
+              );
+            },
           )
         : ListView.builder(
             itemCount: transactions.length,

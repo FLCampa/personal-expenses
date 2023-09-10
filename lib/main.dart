@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../components/chart.dart';
 import 'dart:math';
 
@@ -15,6 +16,10 @@ class ExpensesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData myTheme = ThemeData();
+
+    SystemChrome.setPreferredOrientations([
+      // DeviceOrientation.landscapeLeft,
+    ]);
 
     return MaterialApp(
       home: MyHomePage(),
@@ -51,68 +56,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: '1',
-      title: 'title 1',
-      value: 99.00,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: '2',
-      title: 'title 2',
-      value: 99.00,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: '3',
-      title: 'title 3',
-      value: 99.00,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: '4',
-      title: 'title 4',
-      value: 99.00,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: '5',
-      title: 'title 5',
-      value: 99.00,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: '6',
-      title: 'title 6',
-      value: 99.00,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: '7',
-      title: 'title 7',
-      value: 99.00,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: '8',
-      title: 'title 8',
-      value: 99.00,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: '9',
-      title: 'title 9',
-      value: 99.00,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: '10',
-      title: 'title 10',
-      value: 99.00,
-      date: DateTime.now(),
-    ),
-  ];
+  final List<Transaction> _transactions = [];
+
+  bool _showChart = false;
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
@@ -155,6 +101,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     final appBar = AppBar(
       title: Text(
         'Personal Expenses',
@@ -163,6 +112,15 @@ class _MyHomePageState extends State<MyHomePage> {
         // ),
       ),
       actions: [
+        if (isLandscape)
+          IconButton(
+            icon: Icon(_showChart ? Icons.list : Icons.show_chart),
+            onPressed: () => setState(
+              () {
+                _showChart = !_showChart;
+              },
+            ),
+          ),
         IconButton(
           icon: Icon(Icons.add),
           onPressed: () => _openTransactionFormModal(context),
@@ -181,14 +139,31 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch, //ocupa todo espaco
           children: [
-            Container(
-              height: availableHeight * 0.3,
-              child: Chart(_recentTransactions),
-            ),
-            Container(
-              height: availableHeight * 0.7,
-              child: TransactionList(_transactions, _removeTransaction),
-            ),
+            // if (isLandscape)
+            //   Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Text('Show Chart'),
+            //       Switch(
+            //         value: _showChart,
+            //         onChanged: (value) {
+            //           setState(() {
+            //             _showChart = value;
+            //           });
+            //         },
+            //       ),
+            //     ],
+            //   ),
+            if (_showChart || !isLandscape)
+              Container(
+                height: availableHeight * (isLandscape ? 0.78 : 0.25),
+                child: Chart(_recentTransactions),
+              ),
+            if (!_showChart || !isLandscape)
+              Container(
+                height: availableHeight * (isLandscape ? 1 : 0.75),
+                child: TransactionList(_transactions, _removeTransaction),
+              ),
           ],
         ),
       ),

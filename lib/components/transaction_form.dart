@@ -42,59 +42,66 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(children: [
-          TextField(
-            controller: _titleController,
-            onSubmitted: (_) => _submitForm(),
-            decoration: InputDecoration(
-              labelText: 'Title',
-            ),
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: 10 + MediaQuery.of(context).viewInsets.bottom,
+            left: 10,
+            right: 10,
+            top: 10,
           ),
-          TextField(
-            controller: _valueController,
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
-            onSubmitted: (_) => _submitForm(),
-            decoration: InputDecoration(
-              labelText: 'Value',
+          child: Column(children: [
+            TextField(
+              controller: _titleController,
+              onSubmitted: (_) => _submitForm(),
+              decoration: InputDecoration(
+                labelText: 'Title',
+              ),
             ),
-          ),
-          Container(
-            height: 70,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    _selectedDate == null
-                        ? 'No date selected'
-                        : 'Selected Date: ${DateFormat('dd/MM/y').format(_selectedDate)}',
-                  ),
-                ),
-                TextButton(
-                  child: Text(
-                    'Select date',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+            TextField(
+              controller: _valueController,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              onSubmitted: (_) => _submitForm(),
+              decoration: InputDecoration(
+                labelText: 'Value',
+              ),
+            ),
+            Container(
+              height: 70,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      _selectedDate == null
+                          ? 'No date selected'
+                          : 'Selected Date: ${DateFormat('dd/MM/y').format(_selectedDate)}',
                     ),
                   ),
-                  onPressed: _showDatePicker,
+                  TextButton(
+                    child: Text(
+                      'Select date',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: _showDatePicker,
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed: _submitForm,
+                  child: Text('New Transaction'),
                 ),
               ],
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: Text('New Transaction'),
-              ),
-            ],
-          )
-        ]),
+            )
+          ]),
+        ),
       ),
     );
   }
